@@ -1,0 +1,108 @@
+﻿@model List<BloggWeb.Models.Domain.Tag> //convert this model into list 003
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="container">
+
+        <h1>Show All Tags - Admin Finctionality</h1>
+    </div>
+</div>
+
+<div class="container" py-5>
+    @if(Model != null && Model.Any()) //Model is alraedy defined sa babaw mao na nag handle mga data gikan sa model, sa capital ang M sa model siya003
+    {
+    
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>DisplayName</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tag in Model)
+           
+
+
+                {
+                    <tr>
+                        <td>@tag.Id</td>
+                        <td>@tag.Name</td>
+                        <td>@tag.DisplayName</td>
+                        <td><a class="btn btn-outline-primary" asp-area="" asp-controller="AdminTags" asp-action="Edit" asp-route-id="@tag.Id">Update</a></td>
+                        <!--Importanat line-->
+                        <!--<td><a class="btn btn-outline-danger" asp-area="" asp-controller="AdminTags" asp-action="Delete" asp-route-id="@tag.Id">Delete</a></td> -->
+                         <td>
+                          @Html.ActionLink("Delete", "Delete", new { id=tag.Id }, new { @class="btn btn-outline-danger element", @data_toggle = "modal", @data_target = "#exampleModal" })
+                            @Html.Hidden("TagId", "", new { id = "TagId" })
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+    }
+    else
+    {
+        <p class="strong p-5">No Tags Found! </p>
+    }
+</div>
+
+
+
+<!-- Button trigger modal      -->
+<!--  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+</button>-->
+
+    <!-- Modal -->
+@*<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Tags Info</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h1>Are you sure You want to Delete this Data!</h1>
+                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="Delete" class="btn btn-danger">Delete</button>
+            </div>
+            </div>
+        </div>
+    </div>*@
+
+    <script>
+ 
+    $('.element').click(function (e) {
+        e.preventDefault();
+        $('#exampleModal').modal('show');
+
+        var id = $(this).data('id');
+        $('#TagsId').val(id);
+    });
+
+
+    $('#Delete').click(function () {
+        var studentId = $('#TagId').val();
+
+        $.post(@Url.Action("Delete", "Delete"), { id: studentId }, function (data) {
+            // do something after calling delete action method
+            // this alert box just an example
+            alert("Deleted StudentId: " + studentId);
+        });
+
+        $('#exampleModal').modal('hide');
+    });
+
+    </script>
