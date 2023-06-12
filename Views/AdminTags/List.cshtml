@@ -16,14 +16,15 @@
 <div class="container" py-5>
     @if(Model != null && Model.Any()) //Model is alraedy defined sa babaw mao na nag handle mga data gikan sa model, sa capital ang M sa model siya003
     {
-    
-        <table class="table">
+
+        <table id="example" class="table table-striped" style="width:100%">
             <thead>
                 <tr>
                     <th>Id</th>
                     <th>Name</th>
                     <th>DisplayName</th>
-                    <th></th>
+                    <th>CategoryTag</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -82,27 +83,11 @@
         </div>
     </div>*@
 
-    <script>
- 
-    $('.element').click(function (e) {
-        e.preventDefault();
-        $('#exampleModal').modal('show');
+<script type="text/javascript">
 
-        var id = $(this).data('id');
-        $('#TagsId').val(id);
+    $(document).ready(function () {
+        $('#example').DataTable();
     });
 
-
-    $('#Delete').click(function () {
-        var studentId = $('#TagId').val();
-
-        $.post(@Url.Action("Delete", "Delete"), { id: studentId }, function (data) {
-            // do something after calling delete action method
-            // this alert box just an example
-            alert("Deleted StudentId: " + studentId);
-        });
-
-        $('#exampleModal').modal('hide');
-    });
 
     </script>

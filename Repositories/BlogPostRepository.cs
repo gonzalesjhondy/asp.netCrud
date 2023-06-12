@@ -55,7 +55,7 @@ namespace BloggWeb.Repositories
                 existingBlog.Visible = existingBlog.Visible;
                 existingBlog.PublishedDate = blogPost.PublishedDate;
                 existingBlog.Tags = blogPost.Tags;
-                await bloggieWebDbContext.SaveChangesAsync();
+                await bloggieWebDbContext.SaveChangesAsync();   
                 return existingBlog;
             }
             return null; // back to the controller

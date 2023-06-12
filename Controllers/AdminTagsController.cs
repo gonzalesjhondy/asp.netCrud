@@ -42,15 +42,21 @@ namespace BloggWeb.Controllers
 
         [HttpGet] // to make sure that this is get
         [ActionName("List")]
-      public async Task<IActionResult> List()
+      public async Task<IActionResult> List(int? page)
         {
-            //use DbContext to read the Tag   
+            int PageSize = 5;
+            int PageIndex = 1;
 
+            //use DbContext to read the Tag   
             var tags = await tagRepository.GetAllAsync(); //Tags is a table set naa sa DbContext
 
 
             return View(tags);//insert here Tags para ma display sa list tag form
+        
         }
+
+
+
 
         [HttpGet]  //displAY data get the id into GetAsync
         public async Task<IActionResult> Edit(Guid Id) ///parameter must mutch of an Id to the list edit
