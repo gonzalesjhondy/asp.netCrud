@@ -21,9 +21,16 @@ namespace BloggWeb.Repositories
             return blogPost;
         }
 
-        public Task<BlogPost?> DeleteAsync(Guid id)
+        public async Task<BlogPost?> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+          var existingBlog = await bloggieWebDbContext.BlogPosts.FindAsync(id);
+            if (existingBlog != null)
+            {
+                bloggieWebDbContext.BlogPosts.Remove(existingBlog);
+                await bloggieWebDbContext.SaveChangesAsync();  
+                return existingBlog;
+            }
+            return null;
         }
 
         public async Task<IEnumerable<BlogPost>> GetAllAsync()
@@ -54,8 +61,8 @@ namespace BloggWeb.Repositories
                 existingBlog.URLHandle = blogPost.URLHandle;
                 existingBlog.Visible = existingBlog.Visible;
                 existingBlog.PublishedDate = blogPost.PublishedDate;
-                existingBlog.Tags = blogPost.Tags;
-                await bloggieWebDbContext.SaveChangesAsync();   
+                existingBlog.Tags = blogPost.Tags; //insert this here lain nga table
+                await bloggieWebDbContext.SaveChangesAsync();       
                 return existingBlog;
             }
             return null; // back to the controller

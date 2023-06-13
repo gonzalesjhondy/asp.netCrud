@@ -117,9 +117,9 @@ namespace BloggWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(EditBlogPostRequest editBlogPostRequest)
         {
-            //Map view model back to domain model
-            var blogPostDomainModel = new BlogPost
-            {
+            //Map view model back to domain model 
+            var blogPostDomainModel = new BlogPost //model or table
+            {//map all of this property
                 Id = editBlogPostRequest.Id,
                 Heading = editBlogPostRequest.Heading,
                 PageTitle = editBlogPostRequest.PageTitle,
@@ -133,7 +133,7 @@ namespace BloggWeb.Controllers
             };
 
             //Maps Tags into Domain Model
-            var selectedTags = new List<Tag>();
+            var selectedTags = new List<Tag>();//List allows multiple values to be stored within the same field.
 
             foreach (var selectTag in editBlogPostRequest.SelectedTag)
             {
@@ -143,7 +143,7 @@ namespace BloggWeb.Controllers
 
                     if (foundTag != null) 
                     {
-                     selectedTags.Add(foundTag);
+                     selectedTags.Add(foundTag);// save tags
                     }
                 }
 
@@ -159,6 +159,23 @@ namespace BloggWeb.Controllers
 
             return null;
             // error notification
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(EditBlogPostRequest editBlogPostRequest)
+        {
+            //Talk to repository to delete BlogPost and Tag
+
+           var deleteBlogPost = await blogPostRepository.DeleteAsync(editBlogPostRequest.Id);
+
+            if (deleteBlogPost != null)
+            {
+                //show success notification
+                return RedirectToAction("List");
+            }
+            //show an error notification
+            return RedirectToAction("Edit", new { id = editBlogPostRequest.Id });
+            //display responce
+
         }
     }
 }
